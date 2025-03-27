@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
 const DividirScreen = () => {
-  const [num1, setNum1] = useState<number>(10); // Ejemplo de números
+  const [num1, setNum1] = useState<number>(10);
   const [num2, setNum2] = useState<number>(5);
   const result = num2 !== 0 ? num1 / num2 : 0;
 

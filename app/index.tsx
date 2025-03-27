@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 
 const App = () => {
-  const [num1, setNum1] = useState<string>(''); // Primer número
-  const [num2, setNum2] = useState<string>(''); // Segundo número
-  const [operation, setOperation] = useState<string>(''); // Operación seleccionada
-  const [result, setResult] = useState<number | null>(null); // Estado del resultado (inicialmente null)
+  const [num1, setNum1] = useState<string>('');
+  const [num2, setNum2] = useState<string>('');
+  const [operation, setOperation] = useState<string>('');
+  const [result, setResult] = useState<number | null>(null);
 
   const handleOperation = (op: string) => {
     setOperation(op);
-    setResult(null); // Reiniciar el resultado cuando se cambia la operación
+    setResult(null);
   };
 
   const handleSubmit = () => {
@@ -37,22 +37,23 @@ const App = () => {
         default:
           Alert.alert('Error', 'Operación no válida');
       }
-      // Limpiar campos después de la operación
-      setNum1('');
-      setNum2('');
-      setOperation('');
     } else {
       Alert.alert('Error', 'Por favor ingresa números válidos');
     }
   };
 
+  const handleReset = () => {
+    setNum1('');
+    setNum2('');
+    setOperation('');
+    setResult(null);
+  };
+
   return (
     <View style={styles.container}>
-      {result !== null && <Text style={styles.resultText}>Resultado: {result}</Text>} {/* Mostrar resultado solo si es válido */}
-      
-      {operation && (
+      {result !== null && <Text style={styles.resultText}>Resultado: {result}</Text>}
+      {operation ? (
         <>
-          {/* Campos de entrada para los números */}
           <TextInput
             style={styles.input}
             placeholder="Ingresa el primer número"
@@ -67,16 +68,32 @@ const App = () => {
             value={num2}
             onChangeText={setNum2}
           />
-          <Button title="Realizar operación" onPress={handleSubmit} />
+          <TouchableOpacity style={styles.operationButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Realizar operación</Text>
+          </TouchableOpacity>
         </>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => handleOperation('sum')}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleOperation('subtract')}>
+            <Text style={styles.buttonText}>−</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleOperation('multiply')}>
+            <Text style={styles.buttonText}>×</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleOperation('divide')}>
+            <Text style={styles.buttonText}>÷</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
-      <View style={styles.buttonContainer}>
-        <Button title="Sumar" onPress={() => handleOperation('sum')} />
-        <Button title="Restar" onPress={() => handleOperation('subtract')} />
-        <Button title="Multiplicar" onPress={() => handleOperation('multiply')} />
-        <Button title="Dividir" onPress={() => handleOperation('divide')} />
-      </View>
+      {result !== null && (
+        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+          <Text style={styles.resetButtonText}>Regresar al inicio</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -87,27 +104,73 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#1E1E1E',
   },
   resultText: {
-    fontSize: 24,
+    fontSize: 32,
     marginBottom: 20,
+    color: '#00FF00',
+    fontWeight: 'bold',
   },
   input: {
     width: '80%',
-    height: 40,
+    height: 50,
     borderColor: '#ccc',
     borderWidth: 1,
     marginBottom: 10,
-    paddingLeft: 8,
-    fontSize: 18,
+    paddingLeft: 10,
+    fontSize: 20,
+    color: '#fff',
+    backgroundColor: '#333',
+    borderRadius: 8,
   },
   buttonContainer: {
     width: '80%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    height: 200,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  button: {
+    width: 70,
+    height: 70,
+    backgroundColor: '#444',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 35,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  buttonText: {
+    fontSize: 30,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  operationButton: {
+    marginTop: 20,
+    width: '80%',
+    height: 50,
+    backgroundColor: '#00FF00',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  resetButton: {
+    marginTop: 20,
+    width: '80%',
+    height: 50,
+    backgroundColor: '#FF0000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  resetButtonText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
 export default App;
-

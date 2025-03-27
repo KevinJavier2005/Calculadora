@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const SumarScreen = () => {
-  const [num1, setNum1] = useState<number>(10); // Ejemplo de números
+  const [num1, setNum1] = useState<number>(10);
   const [num2, setNum2] = useState<number>(5);
   const result = num1 + num2;
 
